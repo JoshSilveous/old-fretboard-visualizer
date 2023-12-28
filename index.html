@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<!--
+	IMPORTANT NOTE
+	Hi, 2023 Josh here.
+	This code is really, **really** old. There's a lot of amateur mistakes here. 
+	Please don't judge too harshly.
+-->
+
+<html>
+	<head>
+		<title>Scales Fretboard Visualizer Tool</title>
+		<link rel="stylesheet" type="text/css" href="style.css" />
+		<h1>Fretboard Visualization Tool</h1>
+		<h2>Created by Joshua Silveous</h2>
+		<div class="note">
+			<h4>!!! IMPORTANT NOTE !!!</h4>
+			<p>
+				Hi, 2023 Josh here. This code is really, <strong>really</strong> old. There's a lot
+				of amateur mistakes here. Please don't judge too harshly.
+			</p>
+		</div>
+	</head>
+
+	<body>
+		<canvas id="Fretboard" style="border: 1px solid #c3c3c3">
+			Your browser does not support the canvas element.
+			<a
+				href="https://community.canvaslms.com/t5/Canvas-Basics-Guide/What-are-the-browser-and-computer-requirements-for-Canvas/ta-p/66#:~:text=For%20best%20performance%2C%20Canvas%20should,with%20a%20modern%20web%20browser."
+				>Click here</a
+			>
+			to find out more.
+		</canvas>
+		<br />
+
+		<form id="form">
+			<label for="lowRes">Low Resolution (Faster)</label>
+			<input type="checkbox" id="lowRes" />
+			<br />
+			<label for="scale-letter">Scale:</label>
+			<select id="scale-letter">
+				<option value="2">A</option>
+				<option value="3">A# / Bb</option>
+				<option value="4">B</option>
+				<option value="5" selected>C</option>
+				<option value="6">C# / Db</option>
+				<option value="7">D</option>
+				<option value="8">D# / Eb</option>
+				<option value="9">E</option>
+				<option value="10">F</option>
+				<option value="11">F# / Gb</option>
+				<option value="12">G</option>
+				<option value="1">G# / Ab</option>
+				<option value="0">Custom</option>
+			</select>
+
+			<select name="mode" id="mode">
+				<option value="1" selected>Ionian (Major)</option>
+				<option value="2">Dorian</option>
+				<option value="3">Phrygian</option>
+				<option value="4">Lydian</option>
+				<option value="5">Mixolydian</option>
+				<option value="6">Aeolian (Minor)</option>
+				<option value="7">Locrian</option>
+				<option value="8">Major Pentatonic</option>
+				<option value="9">Minor Pentatonic</option>
+				<option value="10">Egyptian Pentatonic</option>
+				<option value="11">Blues Major Pentatonic</option>
+				<option value="12">Blues Minor Pentatonic</option>
+			</select>
+
+			<input type="radio" id="flats" name="flatOrSharp" checked />
+			<label for="flats">Flats</label>
+			<input type="radio" id="sharps" name="flatOrSharp" />
+			<label for="sharps">Sharps</label>
+
+			<br />
+
+			<div id="scaleNotes"></div>
+
+			<table id="customNotes">
+				<tr>
+					<td><input type="checkbox" id="n1" name="n1" /></td>
+					<td><input type="checkbox" id="n2" name="n2" /></td>
+					<td><input type="checkbox" id="n3" name="n3" /></td>
+					<td><input type="checkbox" id="n4" name="n4" /></td>
+					<td><input type="checkbox" id="n5" name="n5" /></td>
+					<td><input type="checkbox" id="n6" name="n6" /></td>
+					<td><input type="checkbox" id="n7" name="n7" /></td>
+					<td><input type="checkbox" id="n8" name="n8" /></td>
+					<td><input type="checkbox" id="n9" name="n9" /></td>
+					<td><input type="checkbox" id="n10" name="n10" /></td>
+					<td><input type="checkbox" id="n11" name="n11" /></td>
+					<td><input type="checkbox" id="n12" name="n12" /></td>
+				</tr>
+				<tr>
+					<td><label for="n1" id="n1d">Ab</label></td>
+					<td><label for="n2" id="n2d">A</label></td>
+					<td><label for="n3" id="n3d">Bb</label></td>
+					<td><label for="n4" id="n4d">B</label></td>
+					<td><label for="n5" id="n5d">C</label></td>
+					<td><label for="n6" id="n6d">Db</label></td>
+					<td><label for="n7" id="n7d">D</label></td>
+					<td><label for="n8" id="n8d">Eb</label></td>
+					<td><label for="n9" id="n9d">E</label></td>
+					<td><label for="n10" id="n10d">F</label></td>
+					<td><label for="n11" id="n11d">Fb</label></td>
+					<td><label for="n12" id="n12d">G</label></td>
+				</tr>
+				<tr>
+					<td><input type="color" id="n1c" value="#ffffff" /></td>
+					<td><input type="color" id="n2c" value="#ffffff" /></td>
+					<td><input type="color" id="n3c" value="#ffffff" /></td>
+					<td><input type="color" id="n4c" value="#ffffff" /></td>
+					<td><input type="color" id="n5c" value="#ffffff" /></td>
+					<td><input type="color" id="n6c" value="#ffffff" /></td>
+					<td><input type="color" id="n7c" value="#ffffff" /></td>
+					<td><input type="color" id="n8c" value="#ffffff" /></td>
+					<td><input type="color" id="n9c" value="#ffffff" /></td>
+					<td><input type="color" id="n10c" value="#ffffff" /></td>
+					<td><input type="color" id="n11c" value="#ffffff" /></td>
+					<td><input type="color" id="n12c" value="#ffffff" /></td>
+				</tr>
+			</table>
+
+			<br />
+			<label for="showfullscale" id="showfullscalelabel" style="display: none"
+				>Back to scale</label
+			>
+			<input type="radio" name="chordtoggle" id="showfullscale" style="display: none" />
+			<table id="chords" width="350px">
+				<tr>
+					<th width="10%">Show</th>
+					<th width="10%"></th>
+					<th width="10%">Chord</th>
+					<th width="5%">Type</th>
+					<th width="3%">1st</th>
+					<th width="3%">3rd</th>
+					<th width="3%">5th</th>
+				</tr>
+				<tr>
+					<td><input type="radio" name="chordtoggle" id="chord1toggle" /></td>
+					<th id="chord1numeral" style="font-size: 23px"></th>
+					<td id="chord1name" style="font-size: 23px"></td>
+					<td id="chord1type"></td>
+					<td id="chord1note1" style="font-size: 23px"></td>
+					<td id="chord1note2" style="font-size: 23px"></td>
+					<td id="chord1note3" style="font-size: 23px"></td>
+				</tr>
+				<tr>
+					<td><input type="radio" name="chordtoggle" id="chord2toggle" /></td>
+					<th id="chord2numeral" style="font-size: 23px"></th>
+					<td id="chord2name" style="font-size: 23px"></td>
+					<td id="chord2type"></td>
+					<td id="chord2note1" style="font-size: 23px"></td>
+					<td id="chord2note2" style="font-size: 23px"></td>
+					<td id="chord2note3" style="font-size: 23px"></td>
+				</tr>
+				<tr>
+					<td><input type="radio" name="chordtoggle" id="chord3toggle" /></td>
+					<th id="chord3numeral" style="font-size: 23px"></th>
+					<td id="chord3name" style="font-size: 23px"></td>
+					<td id="chord3type"></td>
+					<td id="chord3note1" style="font-size: 23px"></td>
+					<td id="chord3note2" style="font-size: 23px"></td>
+					<td id="chord3note3" style="font-size: 23px"></td>
+				</tr>
+				<tr>
+					<td><input type="radio" name="chordtoggle" id="chord4toggle" /></td>
+					<th id="chord4numeral" style="font-size: 23px"></th>
+					<td id="chord4name" style="font-size: 23px"></td>
+					<td id="chord4type"></td>
+					<td id="chord4note1" style="font-size: 23px"></td>
+					<td id="chord4note2" style="font-size: 23px"></td>
+					<td id="chord4note3" style="font-size: 23px"></td>
+				</tr>
+				<tr>
+					<td><input type="radio" name="chordtoggle" id="chord5toggle" /></td>
+					<th id="chord5numeral" style="font-size: 23px"></th>
+					<td id="chord5name" style="font-size: 23px"></td>
+					<td id="chord5type"></td>
+					<td id="chord5note1" style="font-size: 23px"></td>
+					<td id="chord5note2" style="font-size: 23px"></td>
+					<td id="chord5note3" style="font-size: 23px"></td>
+				</tr>
+				<tr>
+					<td><input type="radio" name="chordtoggle" id="chord6toggle" /></td>
+					<th id="chord6numeral" style="font-size: 23px"></th>
+					<td id="chord6name" style="font-size: 23px"></td>
+					<td id="chord6type"></td>
+					<td id="chord6note1" style="font-size: 23px"></td>
+					<td id="chord6note2" style="font-size: 23px"></td>
+					<td id="chord6note3" style="font-size: 23px"></td>
+				</tr>
+				<tr>
+					<td><input type="radio" name="chordtoggle" id="chord7toggle" /></td>
+					<th id="chord7numeral" style="font-size: 23px"></th>
+					<td id="chord7name" style="font-size: 23px"></td>
+					<td id="chord7type"></td>
+					<td id="chord7note1" style="font-size: 23px"></td>
+					<td id="chord7note2" style="font-size: 23px"></td>
+					<td id="chord7note3" style="font-size: 23px"></td>
+				</tr>
+			</table>
+			<label for="showChordsToggle" id="showChordsToggleLabel">Hide Chords</label>
+			<input type="checkbox" id="showChordsToggle" />
+			<br /><br />
+
+			<label for="customTuningToggle">Custom Tuning</label>
+			<input type="checkbox" id="customTuningToggle" />
+			<table id="customTuning">
+				<tr>
+					<td>String 1</td>
+					<td>
+						<select id="str1tuning">
+							<option value="2">A</option>
+							<option value="3">A# / Bb</option>
+							<option value="4">B</option>
+							<option value="5">C</option>
+							<option value="6">C# / Db</option>
+							<option value="7">D</option>
+							<option value="8">D# / Eb</option>
+							<option value="9" selected>E</option>
+							<option value="10">F</option>
+							<option value="11">F# / Gb</option>
+							<option value="12">G</option>
+							<option value="1">G# / Ab</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>String 2</td>
+					<td>
+						<select id="str2tuning">
+							<option value="2">A</option>
+							<option value="3">A# / Bb</option>
+							<option value="4" selected>B</option>
+							<option value="5">C</option>
+							<option value="6">C# / Db</option>
+							<option value="7">D</option>
+							<option value="8">D# / Eb</option>
+							<option value="9">E</option>
+							<option value="10">F</option>
+							<option value="11">F# / Gb</option>
+							<option value="12">G</option>
+							<option value="1">G# / Ab</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>String 3</td>
+					<td>
+						<select id="str3tuning">
+							<option value="2">A</option>
+							<option value="3">A# / Bb</option>
+							<option value="4">B</option>
+							<option value="5">C</option>
+							<option value="6">C# / Db</option>
+							<option value="7">D</option>
+							<option value="8">D# / Eb</option>
+							<option value="9">E</option>
+							<option value="10">F</option>
+							<option value="11">F# / Gb</option>
+							<option value="12" selected>G</option>
+							<option value="1">G# / Ab</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>String 4</td>
+					<td>
+						<select id="str4tuning">
+							<option value="2">A</option>
+							<option value="3">A# / Bb</option>
+							<option value="4">B</option>
+							<option value="5">C</option>
+							<option value="6">C# / Db</option>
+							<option value="7" selected>D</option>
+							<option value="8">D# / Eb</option>
+							<option value="9">E</option>
+							<option value="10">F</option>
+							<option value="11">F# / Gb</option>
+							<option value="12">G</option>
+							<option value="1">G# / Ab</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>String 5</td>
+					<td>
+						<select id="str5tuning">
+							<option value="2" selected>A</option>
+							<option value="3">A# / Bb</option>
+							<option value="4">B</option>
+							<option value="5">C</option>
+							<option value="6">C# / Db</option>
+							<option value="7">D</option>
+							<option value="8">D# / Eb</option>
+							<option value="9">E</option>
+							<option value="10">F</option>
+							<option value="11">F# / Gb</option>
+							<option value="12">G</option>
+							<option value="1">G# / Ab</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>String 6</td>
+					<td>
+						<select id="str6tuning">
+							<option value="2">A</option>
+							<option value="3">A# / Bb</option>
+							<option value="4">B</option>
+							<option value="5">C</option>
+							<option value="6">C# / Db</option>
+							<option value="7">D</option>
+							<option value="8">D# / Eb</option>
+							<option value="9" selected>E</option>
+							<option value="10">F</option>
+							<option value="11">F# / Gb</option>
+							<option value="12">G</option>
+							<option value="1">G# / Ab</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</body>
+
+	<script src="main.js"></script>
+</html>
