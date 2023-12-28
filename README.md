@@ -3,6 +3,8 @@ This is an old VanillaJS project I created around March 2022 while taking a Java
 I wanted a faster way to access different guitar scales, modes, and chords without having to look them up every time. So I made this.
 This project catapulted me into an interest in Web Development and JavaScript.
 
+You can find the deployment of this tool [here](https://old-fretboard-visualizer.vercel.app/)
+
 **I have since abandoned this project.**
 
 I made a second iteration of this idea, called MusiqTools, while I was learning React. The repository for MusiqTools can be found [here](https://github.com/JoshSilveous/musiqtools).
